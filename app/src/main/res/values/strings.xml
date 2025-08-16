@@ -1,3 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">suhu</string>
+    <string name="app_name">Suhu</string>
+    <string name="not_available">N/A</string>
+    <string name="offline">Offline</string>
+    <string name="online">Online</string>
 </resources>

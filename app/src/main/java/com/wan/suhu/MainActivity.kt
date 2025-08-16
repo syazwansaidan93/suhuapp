@@ -10,11 +10,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
-import com.wan.suhu.R
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -111,10 +109,10 @@ class MainActivity : AppCompatActivity() {
                     // If both APIs fail, show error state in UI
                     Log.e("MainActivity", "Both primary and fallback APIs failed: ${e2.message}")
                     runOnUiThread {
-                        indoorTempText.text = "N/A"
-                        outdoorTempText.text = "N/A"
+                        indoorTempText.text = getString(R.string.not_available)
+                        outdoorTempText.text = getString(R.string.not_available)
                         apiStatusIndicator.setBackgroundResource(R.drawable.status_indicator_offline)
-                        apiStatusText.text = "Offline"
+                        apiStatusText.text = getString(R.string.offline)
                     }
                 }
             }
@@ -126,10 +124,10 @@ class MainActivity : AppCompatActivity() {
      */
     private fun updateUI(temperatureData: TemperatureData) {
         runOnUiThread {
-            indoorTempText.text = String.format("%.1f °C", temperatureData.indoorTempC)
-            outdoorTempText.text = String.format("%.1f °C", temperatureData.outdoorTempC)
+            indoorTempText.text = String.format(Locale.getDefault(), "%.1f °C", temperatureData.indoorTempC)
+            outdoorTempText.text = String.format(Locale.getDefault(), "%.1f °C", temperatureData.outdoorTempC)
             apiStatusIndicator.setBackgroundResource(R.drawable.status_indicator_online)
-            apiStatusText.text = "Online"
+            apiStatusText.text = getString(R.string.online)
         }
     }
 }

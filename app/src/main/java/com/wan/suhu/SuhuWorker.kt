@@ -9,6 +9,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
 
 class SuhuWorker(appContext: Context, workerParams: WorkerParameters) :
     CoroutineWorker(appContext, workerParams) {
@@ -31,8 +32,8 @@ class SuhuWorker(appContext: Context, workerParams: WorkerParameters) :
             val temperatureData = primaryApiService.getLatestTemperature()
 
             // Update widget views on success
-            views.setTextViewText(R.id.widget_outdoor_temp, String.format("outdor : %.1f °C", temperatureData.outdoorTempC))
-            views.setTextViewText(R.id.widget_indoor_temp, String.format("indoor : %.1f °C", temperatureData.indoorTempC))
+            views.setTextViewText(R.id.widget_outdoor_temp, String.format(Locale.getDefault(), "outdor : %.1f °C", temperatureData.outdoorTempC))
+            views.setTextViewText(R.id.widget_indoor_temp, String.format(Locale.getDefault(), "indoor : %.1f °C", temperatureData.indoorTempC))
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetIds, views)
@@ -51,8 +52,8 @@ class SuhuWorker(appContext: Context, workerParams: WorkerParameters) :
                 val fallbackApiService = fallbackRetrofit.create(ApiService::class.java)
                 val temperatureData = fallbackApiService.getLatestTemperature()
 
-                views.setTextViewText(R.id.widget_outdoor_temp, String.format("outdor : %.1f °C", temperatureData.outdoorTempC))
-                views.setTextViewText(R.id.widget_indoor_temp, String.format("indoor : %.1f °C", temperatureData.indoorTempC))
+                views.setTextViewText(R.id.widget_outdoor_temp, String.format(Locale.getDefault(), "outdor : %.1f °C", temperatureData.outdoorTempC))
+                views.setTextViewText(R.id.widget_indoor_temp, String.format(Locale.getDefault(), "indoor : %.1f °C", temperatureData.indoorTempC))
 
                 appWidgetManager.updateAppWidget(appWidgetIds, views)
                 Log.d("SuhuWorker", "Successfully fetched from fallback and updated widget.")
