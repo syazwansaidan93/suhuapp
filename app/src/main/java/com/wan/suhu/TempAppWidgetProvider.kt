@@ -60,4 +60,21 @@ class TempAppWidgetProvider : AppWidgetProvider() {
             }
         }
     }
+
+    override fun onEnabled(context: Context) {
+        // Called when the first instance of the widget is added.
+        // We'll immediately trigger a data fetch so the widget isn't empty.
+        Log.d("TempAppWidgetProvider", "onEnabled called. Enqueuing initial one-time work.")
+        val workRequest = OneTimeWorkRequest.Builder(SuhuWorker::class.java)
+            .addTag(WORK_TAG)
+            .build()
+        WorkManager.getInstance(context).enqueue(workRequest)
+    }
+
+    override fun onDisabled(context: Context) {
+        // Called when the last instance of the widget is removed.
+        // We should cancel all work requests to save resources.
+        Log.d("TempAppWidgetProvider", "onDisabled called. Cancelling all work.")
+        WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG)
+    }
 }
